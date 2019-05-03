@@ -1,18 +1,16 @@
 #pragma once
 #include <memory>
-#include <vector>
-#include "Ceil.h"
+#include "Cell.h"
 
-template <class T>
-using Matrix = std::vector<std::vector<T>>;
-
-class Ceil;
+class Cell;
+class RLEDecryptor;
 class Board
 {
 	int size;
 	int X;
 	int Y;
-	Matrix<Ceil> ceils;
+	Matrix<Cell> cells;
+	friend class RLEDecryptor;
 public:
 	void initBoard();
 	void countNeighbours();
@@ -25,6 +23,7 @@ public:
 	Board& operator=(Board&&);
 	Board();
 	Board(int);
+	Board(int, int);
 	Board(const Board&);
 	Board(Board&&);
 	~Board();

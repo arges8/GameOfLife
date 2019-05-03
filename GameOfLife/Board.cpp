@@ -1,4 +1,5 @@
 #include "Board.h"
+#include "RLEDecryptor.h"
 #include <random>
 #include <functional>
 #include <iostream>
@@ -10,14 +11,14 @@
 
 void Board::initBoard()
 {
-	this->ceils.resize(this->X, std::vector<Ceil>(this->Y, Ceil()));
+	this->cells.resize(this->X, std::vector<Cell>(this->Y, Cell()));
 	auto gen = std::bind(std::uniform_int_distribution<>(0, 1), std::default_random_engine());
 	for (int i = 0; i < this->X; ++i)
 	{
 		for (int j = 0; j < this->Y; ++j)
 		{
 			// activate random ceils (initial values)
-			ceils[i][j].setActive(gen());
+			cells[i][j].setActive(gen());
 		}
 	}
 }
@@ -31,47 +32,47 @@ void Board::countNeighbours()
 		{
 			counter = 0;
 			if (i-1 >=0 && j-1>= 0)
-				counter+= ceils[i - 1][j - 1].isActive();
+				counter+= cells[i - 1][j - 1].isActive();
 			else if (j == 0)
 			{
-				counter += ceils[i][Y - 1].isActive();
+				counter += cells[i][Y - 1].isActive();
 				if (i - 1 >= 0)
 				{
-					counter += ceils[i - 1][Y - 1].isActive();
+					counter += cells[i - 1][Y - 1].isActive();
 				}
 				if (i + 1 < X)
 				{
-					counter += ceils[i + 1][Y - 1].isActive();
+					counter += cells[i + 1][Y - 1].isActive();
 				}
 			}
-			if (i - 1 >= 0 && ceils[i - 1][j].isActive())
+			if (i - 1 >= 0 && cells[i - 1][j].isActive())
 				counter++;
 			if (i - 1 >= 0 && j + 1 < Y)
-				counter += ceils[i - 1][j + 1].isActive();
+				counter += cells[i - 1][j + 1].isActive();
 			else if (j == Y - 1)
 			{
-				counter += ceils[i][0].isActive();
+				counter += cells[i][0].isActive();
 				if (i - 1 >= 0)
 				{
-					counter += ceils[i - 1][0].isActive();
+					counter += cells[i - 1][0].isActive();
 				}
 				if (i + 1 < X)
 				{
-					counter += ceils[i + 1][0].isActive();
+					counter += cells[i + 1][0].isActive();
 				}
 			}
 			if (j + 1 < Y)
-				counter += ceils[i][j + 1].isActive();
+				counter += cells[i][j + 1].isActive();
 			if (i + 1 < X && j + 1 < Y)
-				counter += ceils[i + 1][j + 1].isActive();
+				counter += cells[i + 1][j + 1].isActive();
 			if (i + 1 < X)
-				counter += ceils[i + 1][j].isActive();
+				counter += cells[i + 1][j].isActive();
 			if (i + 1 < X && j - 1 >= 0)
-				counter += ceils[i + 1][j - 1].isActive();
+				counter += cells[i + 1][j - 1].isActive();
 			if (j - 1 >= 0)
-				counter += ceils[i][j - 1].isActive();
+				counter += cells[i][j - 1].isActive();
 			
-			ceils[i][j].setNeighbours(counter);
+			cells[i][j].setNeighbours(counter);
 		}
 	}
 }
@@ -82,7 +83,7 @@ void Board::displayTheBoard()
 	{
 		for (int j = 0; j < Y; ++j)
 		{
-			if (ceils[i][j].isActive())
+			if (cells[i][j].isActive())
 				std::cout << "X";
 			else
 				std::cout << " ";
@@ -102,14 +103,14 @@ void Board::letsPlayTheGame()
 		{
 			for (int j = 0; j < Y; ++j)
 			{
-				if ((ceils[i][j].isActive()) &&
-					(ceils[i][j].getNeighbours() < 2 || ceils[i][j].getNeighbours() > 3))
+				if ((cells[i][j].isActive()) &&
+					(cells[i][j].getNeighbours() < 2 || cells[i][j].getNeighbours() > 3))
 				{
-					ceils[i][j].setActive(false);
+					cells[i][j].setActive(false);
 				} 
-				else if(!ceils[i][j].isActive() && ceils[i][j].getNeighbours() == 3)
+				else if(!cells[i][j].isActive() && cells[i][j].getNeighbours() == 3)
 				{
-					ceils[i][j].setActive(true);
+					cells[i][j].setActive(true);
 				}
 			}
 		}
@@ -127,7 +128,7 @@ void Board::loadNewBoard(std::string path)
 	{
 		for (int j = 0; j < Y; ++j)
 		{
-			ceils[i][j].setActive(false);
+			cells[i][j].setActive(false);
 		}
 	}
 	while (!file.eof())
@@ -136,7 +137,7 @@ void Board::loadNewBoard(std::string path)
 		x = std::stoi(line);
 		file >> line;
 		y = std::stoi(line);
-		ceils[x][y].setActive(true);
+		cells[x][y].setActive(true);
 		//std::cout << "x: " << x << "\ty: " << y << std::endl;
 		//getchar();
 	}
@@ -144,7 +145,7 @@ void Board::loadNewBoard(std::string path)
 
 void Board::loadPatternFromFile(std::string path)
 {
-	int x = 0, y = 0;
+	/*int x = 0, y = 0;
 	std::string line;
 	std::ifstream file;
 	std::istringstream iss;
@@ -173,13 +174,16 @@ void Board::loadPatternFromFile(std::string path)
 				tmp += line[index];
 			}
 			this->Y = stoi(tmp);
-			this->ceils.resize(this->X, std::vector<Ceil>(this->Y, Ceil()));
+			this->cells.resize(this->X, std::vector<Cell>(this->Y, Cell()));
 		}
-	}
-	while (getline(file, line))
+	}*/
+	RLEDecryptor::decrypt(cells, path);
+	this->X = cells.size();
+	this->Y = cells[0].size();
+	/*while (getline(file, line))
 	{
 		
-	}
+	}*/
 }
 
 void Board::setCeils(int x, int startY, int endY)
@@ -193,7 +197,7 @@ Board& Board::operator=(const Board& board)
 	{
 		// deep copy
 		this->size = board.size;
-		this->ceils = board.ceils;
+		this->cells = board.cells;
 	}
 	return *this;
 }
@@ -203,9 +207,9 @@ Board & Board::operator=(Board && board)
 	if (this != &board)
 	{
 		this->size = board.size;
-		this->ceils = board.ceils;
+		this->cells = board.cells;
 		board.size = 0;
-		board.ceils.clear();
+		board.cells.clear();
 	}
 	return *this;
 }
@@ -246,16 +250,23 @@ Board::Board(int size)
 	initBoard();
 }
 
+Board::Board(int x, int y)
+{
+	this->X = x;
+	this->Y = y;
+	initBoard();
+}
+
 Board::Board(const Board & board)
 {
 	this->size = board.size;
-	this->ceils = board.ceils;
+	this->cells = board.cells;
 }
 
-Board::Board(Board&& board): size(board.size), ceils(board.ceils)
+Board::Board(Board&& board): size(board.size), cells(board.cells)
 {
 	board.size = 0;
-	board.ceils.clear();
+	board.cells.clear();
 }
 
 

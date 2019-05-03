@@ -1,28 +1,28 @@
-#include "Ceil.h"
+#include "Cell.h"
 
 
 
-void Ceil::setNeighbours(int nei)
+void Cell::setNeighbours(int nei)
 {
 	neighbours = nei;
 }
 
-int Ceil::getNeighbours()
+int Cell::getNeighbours()
 {
 	return neighbours;
 }
 
-void Ceil::setActive(bool activate)
+void Cell::setActive(bool activate)
 {
 	this->active = activate;
 }
 
-bool Ceil::isActive()
+bool Cell::isActive()
 {
 	return active;
 }
 
-Ceil& Ceil::operator=(const Ceil& ceil)
+Cell& Cell::operator=(const Cell& ceil)
 {
 	if (this != &ceil)
 	{
@@ -32,7 +32,7 @@ Ceil& Ceil::operator=(const Ceil& ceil)
 	return *this;
 }
 
-Ceil& Ceil::operator=(Ceil&& ceil)
+Cell& Cell::operator=(Cell&& ceil)
 {
 	if (this != &ceil)
 	{
@@ -44,23 +44,23 @@ Ceil& Ceil::operator=(Ceil&& ceil)
 	return *this;
 }
 
-Ceil::Ceil()
+Cell::Cell()
 {
 }
 
-Ceil::Ceil(const Ceil& ceil)
+Cell::Cell(const Cell& ceil)
 {
 	active = ceil.active;
 	neighbours = ceil.neighbours;
 }
 
-Ceil::Ceil(Ceil && ceil): active(ceil.active), neighbours(ceil.neighbours)
+Cell::Cell(Cell && ceil): active(ceil.active), neighbours(ceil.neighbours)
 {
 	ceil.active = false;
 	ceil.neighbours = 0;
 }
 
 
-Ceil::~Ceil()
+Cell::~Cell()
 {
 }
