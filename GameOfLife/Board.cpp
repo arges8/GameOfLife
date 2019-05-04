@@ -146,8 +146,8 @@ void Board::loadNewBoard(std::string path)
 void Board::loadPatternFromFile(std::string path)
 {
 	RLEDecryptor::decrypt(cells, path);
-	this->X = cells.size();
-	this->Y = cells[0].size();
+	this->X = cells.shape()[0];
+	this->Y = cells.shape()[1];
 }
 
 void Board::setCeils(int x, int startY, int endY)

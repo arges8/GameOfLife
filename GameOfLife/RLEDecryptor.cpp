@@ -24,7 +24,6 @@ void RLEDecryptor::decrypt(matrix& cells, std::string path)
 			{
 				tmp += line[index];
 				index++;
-				std::cout << tmp << std::endl;
 			}
 			col = stoi(tmp);
 		}
@@ -37,17 +36,24 @@ void RLEDecryptor::decrypt(matrix& cells, std::string path)
 			{
 				tmp += line[index];
 				index++;
-				std::cout << tmp << std::endl;
 			}
 			row= stoi(tmp);
-			std::cout << "reading pattern from file: X: " << col << " Y: " << row << std::endl;
 		}
 	}
 	char ch;
-	cells.resize(boost::extents[row][col]);
-	std::cout << "Rows: " <<cells.size() << "Columns: " << cells[0].size() << std::endl;
+	int margin = 15;
+	cells.resize(boost::extents[row+margin][col+margin]);
+	std::cout << "Rows: " <<cells.size() << "\tColumns: " << cells[0].size() << std::endl;
+	for (int i = 0; i < row+margin; ++i)
+	{
+		for (int j = 0; j < col+margin; ++j)
+		{
+			cells[i][j].setActive(false);
+		}
+	}
 	int iterRow = 0;
 	int iterCol = 0;
+	int sum = 0;
 	int repeat = 1;
 	std::string numberOfRepeats = "";
 	while (file >> std::noskipws >> ch)
@@ -56,14 +62,11 @@ void RLEDecryptor::decrypt(matrix& cells, std::string path)
 		{
 			numberOfRepeats += ch;
 			repeat = stoi(numberOfRepeats);
-			std::cout << repeat << std::endl;
 		}
 		else if (ch == 'b')
 		{
-			for (int i = 0; i < repeat; ++i) {
-				cells[iterRow][iterCol + i].setActive(false);
-				std::cout << i << std::endl;
-			}
+			for (int i = 0; i < repeat; ++i)
+				cells[iterRow + margin][iterCol + margin + i].setActive(false);
 			iterCol += repeat;
 			repeat = 1;
 			numberOfRepeats = "";
@@ -71,17 +74,27 @@ void RLEDecryptor::decrypt(matrix& cells, std::string path)
 		else if (ch == 'o')
 		{
 			for (int i = 0; i < repeat; ++i)
-				cells[iterRow][iterCol+i].setActive(true);
+				cells[iterRow + margin][iterCol + margin + i].setActive(true);
 			iterCol += repeat;
 			repeat = 1;
 			numberOfRepeats = "";
 		}
 		else if (ch == '$')
 		{
+			if (repeat > 1)
+				iterRow += repeat;
+			else
+				iterRow++;
+			repeat = 1;
+			numberOfRepeats = "";
 			iterCol = 0;
-			iterRow++;
+		}
+		else if (ch == '!')
+		{
+			break;
 		}
 	}
+	getchar();
 }
 
 RLEDecryptor::RLEDecryptor()

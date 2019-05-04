@@ -3,14 +3,12 @@
 #include "Cell.h"
 
 class Cell;
-class RLEDecryptor;
 class Board
 {
 	int size;
 	int X;
 	int Y;
 	matrix cells;
-	friend class RLEDecryptor;
 public:
 	void initBoard();
 	void countNeighbours();
