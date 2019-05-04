@@ -1,11 +1,10 @@
 #include "RLEDecryptor.h"
-
 #include <fstream>
 #include <sstream>
 #include <iostream>
 
 
-void RLEDecryptor::decrypt(Matrix<Cell>& cells, std::string path)
+void RLEDecryptor::decrypt(matrix& cells, std::string path)
 {
 	int col = 0, row = 0;
 	std::string line;
@@ -45,7 +44,7 @@ void RLEDecryptor::decrypt(Matrix<Cell>& cells, std::string path)
 		}
 	}
 	char ch;
-	cells.resize(row, std::vector<Cell>(col, Cell()));
+	cells.resize(boost::extents[row][col]);
 	std::cout << "Rows: " <<cells.size() << "Columns: " << cells[0].size() << std::endl;
 	int iterRow = 0;
 	int iterCol = 0;

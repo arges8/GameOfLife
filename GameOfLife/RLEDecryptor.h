@@ -5,7 +5,7 @@
 class RLEDecryptor
 {
 public:
-	static void decrypt(Matrix<Cell>&, std::string);
+	static void decrypt(matrix&, std::string);
 	RLEDecryptor();
 	~RLEDecryptor();
 };

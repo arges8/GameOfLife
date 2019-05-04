@@ -2,9 +2,9 @@
 
 int main() {
 	
-	Board board(36);
-	board.loadNewBoard("./data/activeCeils.txt");
-	//board.loadPatternFromFile("./data/testPattern.txt");
+	Board board(10);
+	//board.loadNewBoard("./data/activeCeils.txt");
+	board.loadPatternFromFile("./data/testPattern.txt");
 	board.letsPlayTheGame();
 
 	system("pause");

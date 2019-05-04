@@ -11,7 +11,7 @@
 
 void Board::initBoard()
 {
-	this->cells.resize(this->X, std::vector<Cell>(this->Y, Cell()));
+	cells.resize(boost::extents[X][Y]);
 	auto gen = std::bind(std::uniform_int_distribution<>(0, 1), std::default_random_engine());
 	for (int i = 0; i < this->X; ++i)
 	{
@@ -145,45 +145,9 @@ void Board::loadNewBoard(std::string path)
 
 void Board::loadPatternFromFile(std::string path)
 {
-	/*int x = 0, y = 0;
-	std::string line;
-	std::ifstream file;
-	std::istringstream iss;
-	file.open(path.c_str());
-	bool found = false;
-	while (getline(file, line) && !found)
-	{
-		iss.str(line);
-		std::size_t index = line.find("x = ");
-		if (index != std::string::npos)
-		{
-			std::string tmp = "";
-			while (line[index] != ',')
-			{
-				tmp += line[index];
-			}
-			this->X = stoi(tmp);
-		}
-		index = line.find("y = ");
-		if (index != std::string::npos)
-		{
-			found = true;
-			std::string tmp = "";
-			while (line[index] != ',')
-			{
-				tmp += line[index];
-			}
-			this->Y = stoi(tmp);
-			this->cells.resize(this->X, std::vector<Cell>(this->Y, Cell()));
-		}
-	}*/
 	RLEDecryptor::decrypt(cells, path);
 	this->X = cells.size();
 	this->Y = cells[0].size();
-	/*while (getline(file, line))
-	{
-		
-	}*/
 }
 
 void Board::setCeils(int x, int startY, int endY)
@@ -209,7 +173,7 @@ Board & Board::operator=(Board && board)
 		this->size = board.size;
 		this->cells = board.cells;
 		board.size = 0;
-		board.cells.clear();
+		//board.cells
 	}
 	return *this;
 }
@@ -219,16 +183,7 @@ Board::Board()
 	this->size = 100;
 	this->X = this->size;
 	this->Y = this->size;
-/*	this->ceils.resize(this->size, std::vector<Ceil>(this->size, Ceil()));
-	auto gen = std::bind(std::uniform_int_distribution<>(0, 1), std::default_random_engine());
-	for (int i = 0; i < this->size; ++i)
-	{
-		for (int j = 0; j < this->size; ++j)
-		{
-			// activate random ceils (initial values)
-			ceils[i][j].setActive(gen());
-		}
-	}*/
+
 	initBoard();
 }
 
@@ -237,16 +192,7 @@ Board::Board(int size)
 	this->size = size;
 	this->X = this->size;
 	this->Y = this->size;
-/*	this->ceils.resize(this->size, std::vector<Ceil>(this->size, Ceil()));
-	auto gen = std::bind(std::uniform_int_distribution<>(0, 1), std::default_random_engine());
-	for (int i = 0; i < this->size; ++i)
-	{
-		for (int j = 0; j < this->size; ++j)
-		{
-			// activate random ceils (initial values)
-			ceils[i][j].setActive(gen());
-		}
-	}*/
+
 	initBoard();
 }
 
@@ -266,7 +212,7 @@ Board::Board(const Board & board)
 Board::Board(Board&& board): size(board.size), cells(board.cells)
 {
 	board.size = 0;
-	board.cells.clear();
+	//board.cells.clear();
 }
 
 

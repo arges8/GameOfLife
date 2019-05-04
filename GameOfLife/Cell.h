@@ -1,8 +1,12 @@
 #pragma once
+#pragma warning(disable : 4996)
+#include "boost/multi_array.hpp"
+#include <cassert>
 #include <vector>
 
-template <class T>
-using Matrix = std::vector<std::vector<T>>;
+class Cell;
+typedef boost::multi_array<Cell, 2> matrix;
+typedef matrix::index index;
 
 class Cell
 {

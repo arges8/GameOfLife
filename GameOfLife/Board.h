@@ -9,7 +9,7 @@ class Board
 	int size;
 	int X;
 	int Y;
-	Matrix<Cell> cells;
+	matrix cells;
 	friend class RLEDecryptor;
 public:
 	void initBoard();
