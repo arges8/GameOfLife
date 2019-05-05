@@ -43,8 +43,7 @@ void RLEDecryptor::decrypt(matrix& cells, std::string path)
 
 	int margin = 15;
 	cells.resize(boost::extents[row + margin][col + margin]);
-	std::cout << "Rows: " << cells.size() << "\tColumns: " << cells[0].size() << std::endl;
-
+	
 	for (int i = 0; i < row + margin; ++i)
 	{
 		for (int j = 0; j < col + margin; ++j)
@@ -99,7 +98,6 @@ void RLEDecryptor::decrypt(matrix& cells, std::string path)
 			break;
 		}
 	}
-	getchar();
 }
 
 RLEDecryptor::RLEDecryptor()

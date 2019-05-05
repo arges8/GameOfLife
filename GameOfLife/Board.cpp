@@ -94,7 +94,7 @@ void Board::displayTheBoard()
 
 void Board::letsPlayTheGame()
 {
-	while (true) {
+	/*while (true) {*/
 		system("cls");
 		displayTheBoard();
 		countNeighbours();
@@ -114,8 +114,8 @@ void Board::letsPlayTheGame()
 				}
 			}
 		}
-		getchar();
-	}
+	/*	getchar();
+	}*/
 }
 
 void Board::loadNewBoard(std::string path)
