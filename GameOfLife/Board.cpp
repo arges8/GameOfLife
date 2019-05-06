@@ -155,6 +155,11 @@ void Board::setCeils(int x, int startY, int endY)
 
 }
 
+matrix Board::getCells()
+{
+	return cells;
+}
+
 Board& Board::operator=(const Board& board)
 {
 	if (this != &board)

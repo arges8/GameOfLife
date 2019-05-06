@@ -1,13 +1,20 @@
 #include "Menu.h"
 #include <Windows.h>
-#include "boost/thread.hpp"
+//#include "boost/thread.hpp"
 
-void Menu::draw(sf::RenderWindow& window)
+void Menu::draw(sf::RenderWindow& window, matrix cells)
 {
 	for (int i = 0; i < NUM_OF_ITEMS; ++i)
 	{
 		window.draw(sprites[i]);
 	}
+	int pix = 7;
+	int noOfRows = width / pix;
+	int noOfCols = height / pix;
+	TileMap map;
+	map.load(sf::Vector2f(pix, pix), cells,noOfRows, noOfCols);
+	map.setPosition(10, 10);
+	window.draw(map);
 }
 
 void Menu::moveLeft()
@@ -40,9 +47,10 @@ void Menu::moveRight()
 
 void Menu::action(Board& board)
 {
-	boost::thread t(boost::bind(&Board::letsPlayTheGame, &board));
+	//boost::thread t(boost::bind(&Board::letsPlayTheGame, &board));
 	while (selectedIndex == 0)
 	{
+		board.letsPlayTheGame();
 		Sleep(500);
 	}
 	if (selectedIndex == 1)
@@ -80,6 +88,8 @@ Menu::Menu(float width, float height)
 	sprites[3].setPosition((width / (NUM_OF_ITEMS + 1)) * 4, (height / 10) * 9);
 	
 	selectedIndex = 0;
+	this->width = (int)width - 20;
+	this->height = (int)(height*0.9 - 20);
 }
 
 Menu::~Menu()

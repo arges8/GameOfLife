@@ -17,6 +17,7 @@ public:
 	void loadNewBoard(std::string);
 	void loadPatternFromFile(std::string);
 	void setCeils(int, int, int);
+	matrix getCells();
 	Board& operator=(const Board&);
 	Board& operator=(Board&&);
 	Board();
