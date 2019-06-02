@@ -21,6 +21,8 @@ void Board::initBoard()
 			cells[i][j].setActive(gen());
 		}
 	}
+	matrixBackup.push_back(cells);
+	iterator = 0;
 }
 
 void Board::countNeighbours()
@@ -94,15 +96,12 @@ void Board::displayTheBoard()
 
 void Board::letsPlayTheGame()
 {
-	/*while (true) {*/
-		//system("cls");
+
 	if (cells.shape()[0] != X || cells.shape()[1] != Y)
 	{
 		X = cells.shape()[0];
 		Y = cells.shape()[1];
 	}
-	//system("cls");
-	//displayTheBoard();
 	countNeighbours();
 
 	for (int i = 0; i < X; ++i)
@@ -120,8 +119,6 @@ void Board::letsPlayTheGame()
 			}
 		}
 	}
-	/*	getchar();
-	}*/
 }
 
 void Board::loadNewBoard(std::string path)
@@ -144,8 +141,6 @@ void Board::loadNewBoard(std::string path)
 		file >> line;
 		y = std::stoi(line);
 		cells[x][y].setActive(true);
-		//std::cout << "x: " << x << "\ty: " << y << std::endl;
-		//getchar();
 	}
 }
 
@@ -154,17 +149,50 @@ void Board::loadPatternFromFile(std::string path)
 	RLEDecryptor::decrypt(cells, path);
 	this->X = cells.shape()[0];
 	this->Y = cells.shape()[1];
+	matrixBackup.clear();
+	matrixBackup.push_back(cells);
+	iterator = 0;
 }
 
-void Board::setCeils(int x, int startY, int endY)
-{
 
-}
 
 void Board::setXandY(int x, int y)
 {
 	X = x;
 	Y = y;
+}
+
+void Board::nextStep()
+{
+	if (std::distance(matrixBackup.begin(),
+		matrixBackup.begin() + iterator) == iterator) {
+		matrix tmpCells = cells;
+		matrixBackup.push_back(tmpCells);
+		iterator++;
+		cells = matrixBackup.back();
+		letsPlayTheGame();
+	}
+	else {
+		cells = matrixBackup.at(iterator);
+		iterator++;
+	}
+	
+
+}
+
+void Board::previousStep()
+{
+	if (iterator > 1) {
+		iterator--;
+		cells = matrixBackup.at(iterator);
+		if (cells.shape()[0] != X || cells.shape()[1] != Y)
+		{
+			X = cells.shape()[0];
+			std::cout << "Size X: " << X << std::endl;
+			Y = cells.shape()[1];
+			std::cout << "Size Y: " << Y << std::endl;
+		}
+	}
 }
 
 matrix Board::getCells()
@@ -190,7 +218,6 @@ Board & Board::operator=(Board && board)
 		this->size = board.size;
 		this->cells = board.cells;
 		board.size = 0;
-		//board.cells
 	}
 	return *this;
 }
