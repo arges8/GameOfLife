@@ -11,7 +11,7 @@ class TileMap : public sf::Drawable,
 	sf::Texture texture;
 	boolMatrix bools;
 public:
-	void load(sf::Vector2f, matrix, int, int);
+	void load(sf::Vector2f, matrix&, int, int);
 	TileMap();
 	~TileMap();
 private:

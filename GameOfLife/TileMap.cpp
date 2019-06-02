@@ -2,14 +2,27 @@
 
 
 
-void TileMap::load(sf::Vector2f tileSize, matrix cells, int width, int height)
+void TileMap::load(sf::Vector2f tileSize, matrix& cells, int width, int height)
 {
-	bools.resize(boost::extents[width][height]);
-	for (int i = 0; i < cells.shape()[0]; ++i)
-	{
-		for (int j = 0; j < cells.shape()[1]; ++j)
+	if (cells.shape()[0] < height || cells.shape()[1] < width) {
+		int moveRow = height % cells.shape()[0] == 0 ? ((height / cells.shape()[0]) - 1) : ((height - cells.shape()[0]) / 2);
+		int moveCol = width % cells.shape()[1] == 0 ? ((width / cells.shape()[1]) - 1) : ((width - cells.shape()[0]) / 2);
+		//cells.resize(boost::extents[height][width]);
+		bools.resize(boost::extents[height][width]);
+		for (int i = 0; i < cells.shape()[0]; ++i)
 		{
-			bools[j][i] = cells[i][j].isActive();
+			for (int j = 0; j < cells.shape()[1]; ++j)
+			{
+				bools[i + moveRow][j + moveCol] = cells[i][j].isActive();
+			}
+		}
+		cells.resize(boost::extents[height][width]);
+		for (int i = 0; i < cells.shape()[0]; ++i)
+		{
+			for (int j = 0; j < cells.shape()[1]; ++j)
+			{
+				cells[i][j].setActive(bools[i][j]);
+			}
 		}
 	}
 	//cells.resize(boost::extents[width][height]);
@@ -38,7 +51,7 @@ void TileMap::load(sf::Vector2f tileSize, matrix cells, int width, int height)
 			quad[2].position = sf::Vector2f((i + 1) * tileSize.x, (j + 1) * tileSize.y);
 			quad[3].position = sf::Vector2f(i * tileSize.x, (j + 1) * tileSize.y);
 
-			if (!bools[i][j])
+			if (!cells[j][i].isActive())
 			{
 				quad[0].texCoords = sf::Vector2f(0, 0);
 				quad[1].texCoords = sf::Vector2f(tileSize.x - 1, 0);

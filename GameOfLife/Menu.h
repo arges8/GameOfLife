@@ -15,7 +15,7 @@ class Menu
 	sf::Sprite sprites[NUM_OF_ITEMS];
 	
 public:
-	void draw(sf::RenderWindow&, matrix);
+	void draw(sf::RenderWindow&, Board&);
 	void moveLeft();
 	void moveRight();
 	void action(Board &);

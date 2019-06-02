@@ -36,7 +36,7 @@ int main() {
 			}
 		}
 		window.clear(sf::Color(255,255,255));
-		menu.draw(window, board.getCells());
+		menu.draw(window, board);
 		window.display();
 	}
 	

@@ -31,8 +31,8 @@ void Board::countNeighbours()
 		for (int j = 0; j < Y; ++j)
 		{
 			counter = 0;
-			if (i-1 >=0 && j-1>= 0)
-				counter+= cells[i - 1][j - 1].isActive();
+			if (i - 1 >= 0 && j - 1 >= 0)
+				counter += cells[i - 1][j - 1].isActive();
 			else if (j == 0)
 			{
 				counter += cells[i][Y - 1].isActive();
@@ -71,7 +71,7 @@ void Board::countNeighbours()
 				counter += cells[i + 1][j - 1].isActive();
 			if (j - 1 >= 0)
 				counter += cells[i][j - 1].isActive();
-			
+
 			cells[i][j].setNeighbours(counter);
 		}
 	}
@@ -95,25 +95,31 @@ void Board::displayTheBoard()
 void Board::letsPlayTheGame()
 {
 	/*while (true) {*/
-		system("cls");
-		displayTheBoard();
-		countNeighbours();
+		//system("cls");
+	if (cells.shape()[0] != X || cells.shape()[1] != Y)
+	{
+		X = cells.shape()[0];
+		Y = cells.shape()[1];
+	}
+	//system("cls");
+	//displayTheBoard();
+	countNeighbours();
 
-		for (int i = 0; i < X; ++i)
+	for (int i = 0; i < X; ++i)
+	{
+		for (int j = 0; j < Y; ++j)
 		{
-			for (int j = 0; j < Y; ++j)
+			if ((cells[i][j].isActive()) &&
+				(cells[i][j].getNeighbours() < 2 || cells[i][j].getNeighbours() > 3))
 			{
-				if ((cells[i][j].isActive()) &&
-					(cells[i][j].getNeighbours() < 2 || cells[i][j].getNeighbours() > 3))
-				{
-					cells[i][j].setActive(false);
-				} 
-				else if(!cells[i][j].isActive() && cells[i][j].getNeighbours() == 3)
-				{
-					cells[i][j].setActive(true);
-				}
+				cells[i][j].setActive(false);
+			}
+			else if (!cells[i][j].isActive() && cells[i][j].getNeighbours() == 3)
+			{
+				cells[i][j].setActive(true);
 			}
 		}
+	}
 	/*	getchar();
 	}*/
 }
@@ -153,6 +159,12 @@ void Board::loadPatternFromFile(std::string path)
 void Board::setCeils(int x, int startY, int endY)
 {
 
+}
+
+void Board::setXandY(int x, int y)
+{
+	X = x;
+	Y = y;
 }
 
 matrix Board::getCells()
@@ -214,7 +226,7 @@ Board::Board(const Board & board)
 	this->cells = board.cells;
 }
 
-Board::Board(Board&& board): size(board.size), cells(board.cells)
+Board::Board(Board&& board) : size(board.size), cells(board.cells)
 {
 	board.size = 0;
 	//board.cells.clear();
