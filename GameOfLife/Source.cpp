@@ -4,7 +4,7 @@
 int main() {
 	Board board(10);
 	board.loadPatternFromFile("./data/copperhead.txt");
-	sf::RenderWindow window(sf::VideoMode(1000, 750), "Game of Life");
+	sf::RenderWindow window(sf::VideoMode(1200, 750), "Game of Life");
 	Menu menu(window.getSize().x, window.getSize().y);
 
 	while (window.isOpen())

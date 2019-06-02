@@ -5,8 +5,8 @@
 void TileMap::load(sf::Vector2f tileSize, matrix& cells, int width, int height)
 {
 	if (cells.shape()[0] < height || cells.shape()[1] < width) {
-		int moveRow = height % cells.shape()[0] == 0 ? ((height / cells.shape()[0]) - 1) : ((height - cells.shape()[0]) / 2);
-		int moveCol = width % cells.shape()[1] == 0 ? ((width / cells.shape()[1]) - 1) : ((width - cells.shape()[0]) / 2);
+		int moveRow = height % cells.shape()[0] == 0 ? ((height / cells.shape()[0]) - 1) : ((cells.shape()[0]) / 2);
+		int moveCol = width % cells.shape()[1] == 0 ? ((width / cells.shape()[1]) - 1) : ((cells.shape()[0]) / 2);
 		//cells.resize(boost::extents[height][width]);
 		bools.resize(boost::extents[height][width]);
 		for (int i = 0; i < cells.shape()[0]; ++i)

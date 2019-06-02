@@ -51,7 +51,7 @@ void Menu::action(Board& board)
 	while (selectedIndex == 0)
 	{
 		board.letsPlayTheGame();
-		Sleep(500);
+		//Sleep(500);
 	}
 	if (selectedIndex == 1)
 	{
