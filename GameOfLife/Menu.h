@@ -8,7 +8,7 @@ class Menu
 {
 	int width;
 	int height;
-	int selectedIndex;
+	static int selectedIndex;
 	sf::Font font;
 	sf::Text text[NUM_OF_ITEMS];
 	sf::Texture textures[NUM_OF_ITEMS];
@@ -19,6 +19,8 @@ public:
 	void moveLeft();
 	void moveRight();
 	void action(Board &);
+	static int getSelectedIndex();
+	static void setSelectedIndex(int);
 	Menu(float, float);
 	~Menu();
 };

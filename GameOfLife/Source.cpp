@@ -6,6 +6,7 @@ int main() {
 	board.loadPatternFromFile("./data/copperhead.txt");
 	sf::RenderWindow window(sf::VideoMode(1000, 750), "Game of Life");
 	Menu menu(window.getSize().x, window.getSize().y);
+	bool playSimulation = false;
 
 	while (window.isOpen())
 	{
@@ -23,7 +24,21 @@ int main() {
 					menu.moveRight();
 					break;
 				case sf::Keyboard::Enter:
-					menu.action(board);
+					switch (Menu::getSelectedIndex()) {
+					case 0: {
+						playSimulation = !playSimulation;
+						break;
+					}
+					case 1: {
+						system("cls");
+						board.loadPatternFromFile("./data/glider.txt");
+						break;
+					}
+					case 3: {
+						board.letsPlayTheGame();
+						break;
+					}
+					}
 					break;
 				}
 				break;
@@ -35,6 +50,8 @@ int main() {
 			}
 			}
 		}
+		if (playSimulation)
+			board.letsPlayTheGame();
 		window.clear(sf::Color(255,255,255));
 		menu.draw(window, board.getCells());
 		window.display();

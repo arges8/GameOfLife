@@ -2,6 +2,7 @@
 #include <Windows.h>
 //#include "boost/thread.hpp"
 
+int Menu::selectedIndex = 0;
 void Menu::draw(sf::RenderWindow& window, matrix cells)
 {
 	for (int i = 0; i < NUM_OF_ITEMS; ++i)
@@ -49,9 +50,8 @@ void Menu::action(Board& board)
 {
 	//boost::thread t(boost::bind(&Board::letsPlayTheGame, &board));
 	while (selectedIndex == 0)
-	{
+	{ 
 		board.letsPlayTheGame();
-		Sleep(500);
 	}
 	if (selectedIndex == 1)
 	{
@@ -62,6 +62,16 @@ void Menu::action(Board& board)
 	{
 		board.letsPlayTheGame();
 	}
+}
+
+int Menu::getSelectedIndex()
+{
+	return selectedIndex;
+}
+
+void Menu::setSelectedIndex(int index)
+{
+	selectedIndex = index;
 }
 
 Menu::Menu(float width, float height)
