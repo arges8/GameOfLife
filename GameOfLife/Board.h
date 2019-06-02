@@ -2,6 +2,7 @@
 #include <memory>
 #include "Cell.h"
 
+class Menu;
 class Cell;
 class Board
 {
@@ -9,6 +10,7 @@ class Board
 	int X;
 	int Y;
 	matrix cells;
+	friend class Menu;
 public:
 	void initBoard();
 	void countNeighbours();
@@ -17,6 +19,7 @@ public:
 	void loadNewBoard(std::string);
 	void loadPatternFromFile(std::string);
 	void setCeils(int, int, int);
+	void setXandY(int, int);
 	matrix getCells();
 	Board& operator=(const Board&);
 	Board& operator=(Board&&);

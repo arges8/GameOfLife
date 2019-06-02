@@ -2,7 +2,7 @@
 #include <Windows.h>
 //#include "boost/thread.hpp"
 
-void Menu::draw(sf::RenderWindow& window, matrix cells)
+void Menu::draw(sf::RenderWindow& window, Board& board)
 {
 	for (int i = 0; i < NUM_OF_ITEMS; ++i)
 	{
@@ -12,7 +12,7 @@ void Menu::draw(sf::RenderWindow& window, matrix cells)
 	int noOfRows = width / pix;
 	int noOfCols = height / pix;
 	TileMap map;
-	map.load(sf::Vector2f(pix, pix), cells,noOfRows, noOfCols);
+	map.load(sf::Vector2f(pix, pix), board.cells,noOfRows, noOfCols);
 	map.setPosition(10, 10);
 	window.draw(map);
 }
@@ -51,7 +51,7 @@ void Menu::action(Board& board)
 	while (selectedIndex == 0)
 	{
 		board.letsPlayTheGame();
-		Sleep(500);
+		//Sleep(500);
 	}
 	if (selectedIndex == 1)
 	{
