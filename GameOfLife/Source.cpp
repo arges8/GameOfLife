@@ -8,6 +8,16 @@ int main() {
 	int iterator = 0;
 	sf::RenderWindow window(sf::VideoMode(1200, 750), "Game of Life");
 	tgui::Gui gui(window);
+	auto patterns = tgui::ComboBox::create();
+	patterns->setPosition(1010, 20);
+	patterns->setSize(180, 21);
+	patterns->addItem("Glider");
+	patterns->addItem("Copperhead");
+	patterns->addItem("Gosper Glider Gun");
+	patterns->addItem("Queen Bee Shuttle");
+	patterns->setSelectedItemByIndex(2);
+	patterns->moveToFront();
+	gui.add(patterns);
 	Menu menu(window.getSize().x, window.getSize().y);
 	bool playSimulation = false;
 
@@ -33,8 +43,26 @@ int main() {
 						break;
 					}
 					case 1: {
-						
-						board.loadPatternFromFile("./data/glider.txt");
+						switch (patterns->getSelectedItemIndex()) {
+						case 0: {
+							board.loadPatternFromFile("./data/glider.txt");
+							break;
+						}
+						case 1: {
+							board.loadPatternFromFile("./data/copperhead.txt");
+							break;
+						}
+						case 2: {
+							board.loadPatternFromFile("./data/gliderGun.txt");
+							break;
+						}
+						case 3: {
+							board.loadPatternFromFile("./data/queenBeeShuttle.txt");
+							break;
+						}
+						default:
+							break;
+						}
 						break;
 					}
 					case 2: {
@@ -59,7 +87,8 @@ int main() {
 				break;
 			}
 			case sf::Event::Resized: {
-				window.setView(sf::View(sf::FloatRect(0.f, 0.f, static_cast<float>(event.size.width), static_cast<float>(event.size.height))));
+				window.setView(sf::View(sf::FloatRect(0.f, 0.f, static_cast<float>(event.size.width), 
+					static_cast<float>(event.size.height))));
 				//menu.loadTextures(event.size.width, event.size.height);
 				gui.setView(window.getView());
 			}
@@ -77,12 +106,7 @@ int main() {
 		menu.draw(window, board);
 		window.display();
 	}
-	
 
-	
-	//board.loadNewBoard("./data/activeCeils.txt");
-	
-	//board.letsPlayTheGame();
 
 	system("pause");
 }

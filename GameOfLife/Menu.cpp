@@ -76,7 +76,7 @@ void Menu::setSelectedIndex(int index)
 }
 
 void Menu::loadTextures(int width, int height) {
-	this->width = (int)width - 20;
+	this->width = (int)width - 220;
 	this->height = (int)(height * 0.9 - 20);
 	textures[0].loadFromFile("./images/play.png");
 	sprites[0].setTexture(textures[0]);
